@@ -1,44 +1,78 @@
-# opticargo-ml-models
+# 🧠 OptiCargo ML Models Service
 
-Model machine learning terlatih (bukan LLM) yang mendukung Optimization Agent
-dan Graph Analysis Agent, sesuai Bagian 8.3 dokumen desain: Cargo Scoring Model,
-Demand Forecasting Model, dan Anomaly Detection Model.
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
 
-> Repo ini terpisah dari `opticargo-agents` karena punya siklus hidup berbeda:
-> training pipeline, dataset historis, evaluasi metrik, dan retraining berkala —
-> bukan orkestrasi/pemanggilan LLM.
+Repositori ini berisi *backend service* berbasis **FastAPI** yang bertugas melayani prediksi analitik dan Machine Learning untuk ekosistem OptiCargo (Tol Laut). Service ini bertindak sebagai "Otak Kalkulasi" yang akan dipanggil oleh AI Agent secara *real-time* melalui HTTP Request.
 
-## Model yang Dikelola
+Saat ini, model beroperasi dalam mode **MVP (Heuristic)** dan dirancang dengan arsitektur modular agar dapat dengan mudah diganti ke model ML sesungguhnya di fase pengembangan berikutnya.
 
-| Model | Tipe | Dipakai oleh | Fungsi |
-|---|---|---|---|
-| Cargo Scoring Model | Supervised (klasifikasi/regresi) | Optimization Agent | Belajar pola pasangan kapal-kargo yang berhasil vs gagal, tingkatkan akurasi matching dari waktu ke waktu |
-| Demand Forecasting Model | Time-series/regresi | Graph Analysis Agent | Prediksi volume komoditas yang akan tersedia per daerah berdasarkan musim & tren historis |
-| Anomaly Detection Model | Unsupervised | Data Ingestion Agent | Deteksi ketidakwajaran data (harga abnormal, jadwal tidak konsisten) |
+---
 
-## Tech Stack
-- Python: scikit-learn / XGBoost (scoring & forecasting), Isolation Forest atau
-  sejenis (anomaly detection)
-- MLflow (atau alternatif ringan) untuk experiment tracking & model registry
-- Model diserving lewat endpoint HTTP ringan (FastAPI) yang dipanggil oleh
-  `opticargo-agents`
+## ⚠️ Prasyarat Penting (Wajib Dibaca)
 
-## Struktur Direktori
-    /training/scoring_model/         → notebook & script training
-    /training/forecasting_model/
-    /training/anomaly_detection/
-    /models/                          → model artifact terversi (atau pointer ke model registry)
-    /serving/                         → API serving untuk inference
-    /evaluation/                      → skrip evaluasi & metrik
+Service ini sangat bergantung pada skema data (*Pydantic Models*) yang didefinisikan secara terpusat. 
+**Anda WAJIB menginstal repositori `opticargo-shared` secara lokal terlebih dahulu** sebelum menjalankan service ini. 
 
-## Dependensi Repo Lain
-- Data training bersumber dari `opticargo-data` (untuk MVP) dan data transaksional
-  di `opticargo-gateway-api` (untuk produksi).
-- Schema fitur/prediksi mengikuti `opticargo-shared`.
-- Dipanggil oleh `opticargo-agents` (Optimization & Graph Analysis Agent) via HTTP call.
+Pastikan struktur direktori lokal Anda seperti ini:
+```text
+📦 OptiCargo-Tol-Laut-Project
+ ┣ 📂 opticargo-shared     <-- Harus diinstal terlebih dahulu
+ ┗ 📂 opticargo-ml-models  <-- Repositori ini
+```
 
-## Catatan MVP
-Untuk MVP lomba (2-3 minggu), 3 model ini boleh disederhanakan jadi model
-sederhana/rule-based dengan sedikit heuristic + threshold, karena dataset
-historis nyata belum tersedia. Prioritaskan struktur pipeline (training →
-artifact → serving) berjalan, akurasi model bisa ditingkatkan pasca-MVP.
+
+## 🚀 Cara Instalasi dan Menjalankan Service
+
+### 1. Persiapkan Environment
+Pastikan Anda menggunakan Python 3.10 atau yang lebih baru. Buat dan aktifkan virtual environment:
+```bash
+pip install -e .
+
+python -m venv venv
+
+# Pengguna Windows:
+venv\Scripts\activate
+
+# Pengguna Mac/Linux:
+source venv/bin/activate
+```
+
+### 2. Install Repositori opticargo-shared
+Arahkan terminal ke folder opticargo-shared lokal Anda, lalu install dalam editable mode:
+
+```bash
+cd ../opticargo-shared
+pip install -e .
+```
+
+### 3. Install Dependensi ML Models
+Kembali ke folder opticargo-ml-models, lalu install semua kebutuhan library:
+
+```bash
+cd ../opticargo-ml-models
+pip install -r requirements.txt
+```
+
+### 4. Konfigurasi Environment Variables
+Salin file template environment:
+
+```bash
+# Pengguna Windows:
+copy .env.example .env
+
+# Pengguna Mac/Linux:
+cp .env.example .env
+```
+
+### 5. Jalankan Server FastAPI
+
+Jalankan aplikasi menggunakan Uvicorn:
+```bash
+uvicorn serving.main:app --reload
+```
+
+## 📖 Cara Menggunakan API (Untuk Tim AI Agent)
+Tim Agent dapat melihat dan mencoba dokumentasi interaktif (Swagger UI) dengan membuka browser ke:
+👉 http://127.0.0.1:8000/docs
