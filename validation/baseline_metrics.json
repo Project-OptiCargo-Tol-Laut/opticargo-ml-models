@@ -1,0 +1,54 @@
+{
+  "validated_at": "2026-07-30T14:36:00Z",
+  "validation_environment": {
+    "python": "3.13.5",
+    "scikit_learn": "1.8.0",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "joblib": "1.5.3"
+  },
+  "datasets": {
+    "cargo_match": {
+      "rows": 8000,
+      "target_accuracy": 0.9,
+      "achieved_accuracy": 0.900625
+    },
+    "demand_forecast": {
+      "rows": 8000,
+      "target_r2": 0.9,
+      "achieved_r2": 0.9240534470002133
+    },
+    "operational_anomaly": {
+      "rows": 8000,
+      "target_f1": 0.9,
+      "achieved_f1": 0.988929889298893
+    }
+  },
+  "models": {
+    "cargo_match": {
+      "promotion_decision": "promoted",
+      "accuracy": 0.900625,
+      "f1": 0.8395560040363269,
+      "roc_auc": 0.9067706429907346,
+      "hard_constraint_violation_rate": 0.0
+    },
+    "demand_forecast": {
+      "promotion_decision": "promoted",
+      "r2": 0.9235768461577358,
+      "mae_ton": 202.38680019314822,
+      "rmse_ton": 360.51179974803557,
+      "wape": 0.16164997069458262,
+      "interval_95_coverage": 0.945
+    },
+    "operational_anomaly": {
+      "promotion_decision": "promoted",
+      "precision": 1.0,
+      "recall": 0.9781021897810219,
+      "f1": 0.988929889298893,
+      "roc_auc": 0.9998253763140432,
+      "false_positive_rate": 0.0
+    }
+  },
+  "all_promoted": true,
+  "warning": "Semua metrik berasal dari data sintetis dan tidak menjamin performa pada data operasional nyata."
+}
