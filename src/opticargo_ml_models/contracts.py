@@ -53,7 +53,7 @@ class CargoMatchRequest(StrictModel):
     trace_id: str | None = None
 
     @model_validator(mode="after")
-    def add_trace_id(self) -> "CargoMatchRequest":
+    def add_trace_id(self) -> CargoMatchRequest:
         self.trace_id = self.trace_id or str(uuid4())
         return self
 
@@ -77,7 +77,7 @@ class DemandForecastRequest(StrictModel):
     trace_id: str | None = None
 
     @model_validator(mode="after")
-    def add_trace_id(self) -> "DemandForecastRequest":
+    def add_trace_id(self) -> DemandForecastRequest:
         self.trace_id = self.trace_id or str(uuid4())
         return self
 
@@ -101,7 +101,7 @@ class AnomalyDetectionRequest(StrictModel):
     trace_id: str | None = None
 
     @model_validator(mode="after")
-    def add_trace_id(self) -> "AnomalyDetectionRequest":
+    def add_trace_id(self) -> AnomalyDetectionRequest:
         self.trace_id = self.trace_id or str(uuid4())
         return self
 
