@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling>=1.26,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "opticargo-ml-models"
+version = "1.0.0"
+description = "Internal multi-model serving and training lifecycle for OptiCargo AI"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = {text = "Proprietary"}
+authors = [{name = "OptiCargo AI Team"}]
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.32,<1",
+  "pydantic>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+
+  "numpy==2.4.6",
+  "pandas==2.3.3",
+  "scikit-learn==1.9.0",
+  "joblib==1.5.3",
+
+  "prometheus-client>=0.21,<1",
+  "boto3>=1.35,<2",
+  "httpx>=0.28,<1",
+]
+
+[project.optional-dependencies]
+mlflow = ["mlflow-skinny==2.14.1"]
+shared = ["opticargo-shared==1.0.0"]
+dev = [
+  "pytest>=8.3,<10",
+  "pytest-cov>=6,<8",
+  "ruff>=0.9,<1",
+  "mypy>=1.14,<2",
+]
+
+[project.scripts]
+opticargo-generate-cargo-dataset = "opticargo_ml_models.training.generator:main"
+opticargo-generate-forecast-dataset = "opticargo_ml_models.training.forecast_generator:main"
+opticargo-generate-anomaly-dataset = "opticargo_ml_models.training.anomaly_generator:main"
+opticargo-generate-all-datasets = "opticargo_ml_models.training.generate_all:main"
+opticargo-train-cargo-model = "opticargo_ml_models.training.train:main"
+opticargo-train-forecast-model = "opticargo_ml_models.training.forecast_train:main"
+opticargo-train-anomaly-model = "opticargo_ml_models.training.anomaly_train:main"
+opticargo-train-all-models = "opticargo_ml_models.training.train_all:main"
+opticargo-retrain-models = "opticargo_ml_models.jobs.retrain:main"
+opticargo-check-drift = "opticargo_ml_models.jobs.drift:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/opticargo_ml_models"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["src"]
+filterwarnings = [
+  "ignore:Using `httpx` with `starlette.testclient` is deprecated:DeprecationWarning",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
