@@ -1,0 +1,26 @@
+{
+  "dataset_name": "opticargo-synthetic-cargo-match",
+  "dataset_version": "synthetic-cargo-match-2026-07-30-seed42",
+  "created_at": "2026-07-30T14:46:36.711319+00:00",
+  "is_synthetic": true,
+  "provenance": "opticargo-synthetic-cargo-match-generator-v1",
+  "rows": 8000,
+  "label_column": "match_label",
+  "label_definition_version": "cargo-match-acceptance-v1",
+  "sha256": "7c4d31cf4fd152bf5ed7874ff71f9b200ad8b12a527e9dd29a9196ac2536a9ab",
+  "calibration": {
+    "target_accuracy": 0.9,
+    "achieved_accuracy": 0.896875,
+    "achieved_f1": 0.8328267477203647,
+    "achieved_roc_auc": 0.9028918288726683,
+    "teacher_agreement": 0.92,
+    "label_noise_rate": 0.07999999999999996,
+    "train_rows": 6400,
+    "validation_rows": 1600
+  },
+  "limitations": [
+    "Kemiripan/akurasi hanya terhadap aturan pembangkit sintetis, bukan bukti performa pada data nyata.",
+    "Distribusi harus diganti atau dikalibrasi ulang saat data operasional tersedia.",
+    "Data sintetis tidak boleh digabung dengan data nyata tanpa flag dan provenance."
+  ]
+}

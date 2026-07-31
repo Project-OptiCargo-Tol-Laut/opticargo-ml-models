@@ -1,0 +1,25 @@
+{
+  "dataset_name": "opticargo-synthetic-demand-forecast",
+  "dataset_version": "synthetic-demand-forecast-2026-07-30-seed43",
+  "is_synthetic": true,
+  "provenance": "opticargo-synthetic-demand-forecast-generator-v1",
+  "rows": 8000,
+  "target_column": "demand_volume_ton",
+  "target_definition_version": "route-demand-volume-v1",
+  "calibration": {
+    "target_r2": 0.9,
+    "achieved_r2": 0.9232516915335132,
+    "achieved_mae": 201.43394554802282,
+    "achieved_rmse": 361.27791422137705,
+    "noise_ratio": 0.18,
+    "train_rows": 6400,
+    "validation_rows": 1600
+  },
+  "limitations": [
+    "R2 hanya mengukur pola sintetis, bukan akurasi demand operasional nyata.",
+    "Kalibrasi ulang wajib dilakukan ketika outcome route dan booking tersedia.",
+    "Data sintetis dan nyata harus tetap dipisahkan dengan provenance."
+  ],
+  "created_at": "2026-07-30T14:46:36.825986+00:00",
+  "sha256": "2f32708cea2c0c6f5ee87ddcb383065f86d24b62c5169a4678ff5f16649b1ca3"
+}
